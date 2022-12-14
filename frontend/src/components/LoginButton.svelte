@@ -16,7 +16,7 @@
         ADDITIONAL_PARAMETERS
     -->
     <input hidden name="response_type" value="code"/>
-    <input hidden name="scope" value="offline_access"/>
+    <input hidden name="scope" value="offline_access openid email profile"/>
     <input hidden name="client_id" value={clientId}/>
     <input hidden name="audience" value={audience} />
     <input hidden name="redirect_uri" value={callbackUrl}/>

@@ -33,7 +33,7 @@ interface TokenPayload {
 export function setCookies(context: APIContext, response: TokenPayload) {
   context.cookies.set(cookies.accessToken, response.access_token as string, {
     path: "/",
-    expires: new Date(Date.now() + response.expires_in - 200),
+    expires: new Date(Date.now() + response.expires_in),
   });
   context.cookies.set(cookies.refreshToken, response.refresh_token as string, {
     path: "/",
@@ -42,9 +42,9 @@ export function setCookies(context: APIContext, response: TokenPayload) {
 
 export async function getAccessToken(context: APIContext): Promise<string> {
   if (!context.cookies.has(cookies.accessToken)) {
-    const refreshToken = context.cookies.get(cookies.refreshToken)
-      .value as string;
+    const refreshToken = context.cookies.get(cookies.refreshToken).value as string;
     const response = await refreshAccessToken(refreshToken);
+    console.log(response);
     setCookies(context, response);
   }
 

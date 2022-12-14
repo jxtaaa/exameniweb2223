@@ -19,7 +19,8 @@ const api = new DefaultApi(
 
 let sub = await api.authAuthGet();
 let token = getAccessToken(Astro);
-const userid = (sub.split("|")[1]).replace('"', '');
+//const userid = (sub.split("|")[1]).replace('"', '');
+const userid = sub;
 ---
 
 <ExamenLayout title="New">

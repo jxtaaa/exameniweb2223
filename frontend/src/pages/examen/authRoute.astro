@@ -16,9 +16,22 @@ const api = new DefaultApi(
 );
 
 let sub = await api.authAuthGet();
-let token = getAccessToken(Astro);
+const token = await getAccessToken(Astro);
 const userid = (sub.split("|")[1]).replace('"', '');
-console.log(userid);
+async function getUserData(){
+  let data = await fetch(
+    `https://${import.meta.env.PUBLIC_AUTH0_BASEURL}/userinfo`,
+    {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
+  ).then(x => x.json())
+  return data;
+}
+const userData = await getUserData();
+console.log(userData);
+//console.log(userid);
 
 /*
 let userInfo = await fetch(`https://${import.meta.env.PUBLIC_AUTH0_BASEURL}/userinfo`, {
@@ -33,5 +46,7 @@ console.log(userInfo);
 ---
 
 <ExamenLayout title="Authenticated">
-  <h1>Hi, {userid}</h1>
+  <h1>Hi, {userData["given_name"]}</h1>
+  <p>Email: {userData["email"]}</p>
+  <img src={userData["picture"]}/>
 </ExamenLayout>
