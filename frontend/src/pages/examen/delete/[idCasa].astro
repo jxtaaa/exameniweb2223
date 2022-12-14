@@ -1,0 +1,34 @@
+---
+import ExamenLayout from "../../../layouts/ExamenLayout.astro";
+
+import { DefaultApi, GetHouseByIdRequest} from "../../../api/backend/apis";
+import AppConfig from "../../../config";
+import {
+  Configuration as ViviendaConfiguration,
+  Vivienda,
+} from "../../../api/backend";
+
+const { idCasa } = Astro.params as { idCasa: string };
+const viviendaApi = new DefaultApi(
+  new ViviendaConfiguration(AppConfig.viviendas)
+);
+
+let viv : Vivienda;
+
+try{
+    let delCasa : GetHouseByIdRequest = {id: idCasa};
+    viv = await viviendaApi.getHouseById(delCasa);
+} catch (error){
+  return Astro.redirect("/?" + new URLSearchParams({danger: "Cant find house with that ID " + idCasa}));
+}
+---
+
+<ExamenLayout title="Delete house {idCasa}">
+    <div class="alert alert-warning" role="alert">
+        You will delete the house with id: {idCasa}, are you sure?
+        <form class="mt-1" method="post" action="/examen/delete/deleteHandler">
+            <input type="text" name="idCasa" value={idCasa} hidden/>
+            <button type="submit" class="btn btn-warning">Delete</button>
+        </form>
+    </div>
+</ExamenLayout>

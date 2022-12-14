@@ -1,0 +1,32 @@
+---
+import CloudinaryNew from "../../../components/CloudinaryNew.svelte";
+import ExamenLayout from "../../../layouts/ExamenLayout.astro";
+
+import { getAccessToken, isLoggedIn } from "../../../lib/auth0";
+import { Configuration, DefaultApi } from "../../../api/backend";
+
+if(!isLoggedIn(Astro)) {
+  return Astro.redirect("/?danger=You must be logged in to access this page");
+}
+
+
+const api = new DefaultApi(
+  new Configuration({
+    basePath: import.meta.env.BACKEND_URL,
+    accessToken: () => getAccessToken(Astro),
+  })
+);
+
+let sub = await api.authAuthGet();
+let token = getAccessToken(Astro);
+const userid = (sub.split("|")[1]).replace('"', '');
+---
+
+<ExamenLayout title="New">
+    <CloudinaryNew
+        cloudName= {import.meta.env.CLOUDINARY_CLOUD_NAME}
+        uploadPreset={import.meta.env.CLOUDINARY_UPLOAD_PRESET}
+        userid={userid}
+        client:load
+      />
+</ExamenLayout>

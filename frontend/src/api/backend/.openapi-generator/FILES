@@ -1,0 +1,11 @@
+apis/DefaultApi.ts
+apis/index.ts
+index.ts
+models/EditVivienda.ts
+models/HTTPValidationError.ts
+models/LocationInner.ts
+models/NewVivienda.ts
+models/ValidationError.ts
+models/Vivienda.ts
+models/index.ts
+runtime.ts

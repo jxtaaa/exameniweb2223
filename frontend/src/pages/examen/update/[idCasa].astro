@@ -1,0 +1,35 @@
+---
+import { DefaultApi } from "../../../api/backend/apis";
+import ExamenLayout from "../../../layouts/ExamenLayout.astro";
+import CloudinaryEdit from "../../../components/CloudinaryEdit.svelte";
+import AppConfig from "../../../config";
+import {
+  Configuration as ViviendaConfiguration,
+  Vivienda,
+} from "../../../api/backend";
+
+const { idCasa } = Astro.params as { idCasa: string };
+const viviendaApi = new DefaultApi(
+  new ViviendaConfiguration(AppConfig.viviendas)
+);
+
+let viv : Vivienda;
+
+try{
+  viv = await viviendaApi.getHouseById({ id: idCasa });
+} catch (error){
+  return Astro.redirect("/?" + new URLSearchParams({danger: "Cant find house with that ID"}));
+}
+
+const loc = viv?.direccion;
+
+---
+
+<ExamenLayout title="Edit">
+  <CloudinaryEdit
+  cloudName= {import.meta.env.CLOUDINARY_CLOUD_NAME}
+  uploadPreset={import.meta.env.CLOUDINARY_UPLOAD_PRESET}
+  vivienda={viv}
+  client:load
+/>
+</ExamenLayout>

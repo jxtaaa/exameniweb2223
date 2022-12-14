@@ -1,0 +1,37 @@
+---
+import ExamenLayout from '../../layouts/ExamenLayout.astro'
+import { getAccessToken, isLoggedIn } from "../../lib/auth0";
+import { Configuration, DefaultApi } from "../../api/backend";
+import cookies from '../../cookies';
+
+if (!isLoggedIn(Astro)) {
+  return Astro.redirect("/");
+}
+
+const api = new DefaultApi(
+  new Configuration({
+    basePath: import.meta.env.BACKEND_URL,
+    accessToken: () => getAccessToken(Astro),
+  })
+);
+
+let sub = await api.authAuthGet();
+let token = getAccessToken(Astro);
+const userid = (sub.split("|")[1]).replace('"', '');
+console.log(userid);
+
+/*
+let userInfo = await fetch(`https://${import.meta.env.PUBLIC_AUTH0_BASEURL}/userinfo`, {
+  headers: {
+    'Authorization': `Bearer ${token}`
+  }
+})
+  .then(response => response.json())
+
+console.log(userInfo);
+*/
+---
+
+<ExamenLayout title="Authenticated">
+  <h1>Hi, {userid}</h1>
+</ExamenLayout>
