@@ -16,29 +16,29 @@ router = APIRouter()
 
 
 
-@router.get("/viviendas", response_model=List[Vivienda], operation_id="get_houses")
+@router.get("/viviendas", response_model=List[Vivienda], operation_id="get_houses", tag=["Ignorar"])
 async def get_houses(service: ViviendaService = Depends(get_vivienda_service)):
     return await service.get_all_viviendas()
 
-@router.get("/viviendas/{id}", response_model=Vivienda, operation_id="get_house_by_id")
+@router.get("/viviendas/{id}", response_model=Vivienda, operation_id="get_house_by_id", tag=["Ignorar"])
 async def get_house(id: PyObjectId, service: ViviendaService = Depends(get_vivienda_service)):
     return await service.get_vivienda_by_id(id)
 
-@router.post("/viviendas", response_model=Vivienda, operation_id="new_house")
+@router.post("/viviendas", response_model=Vivienda, operation_id="new_house", tag=["Ignorar"])
 async def create_house(request: NewVivienda, service: ViviendaService = Depends(get_vivienda_service)):
     return await service.new_vivienda(request)
 
-@router.delete("/viviendas/{id}", operation_id="delete_house")
+@router.delete("/viviendas/{id}", operation_id="delete_house", tag=["Ignorar"])
 async def delete_house(id: PyObjectId, service: ViviendaService = Depends(get_vivienda_service)):
     return await service.delete_vivienda(id)
 
-@router.put("/viviendas/{id}", response_model=Vivienda, operation_id="edit_house")
+@router.put("/viviendas/{id}", response_model=Vivienda, operation_id="edit_house", tag=["Ignorar"])
 async def edit_house(id: PyObjectId, request: EditVivienda, service: ViviendaService = Depends(get_vivienda_service)):
     return await service.edit_vivienda(id, request)
 
 
 
-@router.get("/auth")
+@router.get("/auth", tag=["Auth"])
 async def auth(auth: Claims=Depends(Authentication)) -> str:
     print(auth)
     return auth[9:44:1]
@@ -46,23 +46,23 @@ async def auth(auth: Claims=Depends(Authentication)) -> str:
 
 #### usuario
 
-@router.get("/usuarios", response_model=List[Usuario], operation_id="get_users")
+@router.get("/usuarios", response_model=List[Usuario], operation_id="get_users" tag=["Ignorar"])
 async def get_users(service: UsuarioService = Depends(get_usuario_service)):
     return await service.get_usuarios()
 
-@router.get("/usuarios/{id}", response_model=Usuario, operation_id="get_user_by_id")
+@router.get("/usuarios/{id}", response_model=Usuario, operation_id="get_user_by_id", tag=["Ignorar"])
 async def get_user(id: PyObjectId, service: UsuarioService = Depends(get_usuario_service)):
     return await service.get_usuario_by_id(id)
 
-@router.post("/usuarios", response_model=Usuario, operation_id="new_user")
+@router.post("/usuarios", response_model=Usuario, operation_id="new_user", tag=["Ignorar"])
 async def create_user(request: NewUsuario, service: UsuarioService = Depends(get_usuario_service)):
     return await service.new_usuario(request)
 
-@router.delete("/usuarios/{id}", operation_id="delete_user")
+@router.delete("/usuarios/{id}", operation_id="delete_user", tag=["Ignorar"])
 async def delete_user(id: PyObjectId, service: UsuarioService = Depends(get_usuario_service)):
     return await service.del_usuario(id)
 
-@router.put("/usuarios/{id}", response_model=Usuario, operation_id="edit_user")
+@router.put("/usuarios/{id}", response_model=Usuario, operation_id="edit_user", tag=["Ignorar"])
 async def edit_user(id: PyObjectId, request: EditUsuario, service: UsuarioService = Depends(get_usuario_service)):
     return await service.edit_usuario(id, request)
 
