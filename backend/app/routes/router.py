@@ -1,20 +1,38 @@
 from typing import List, Optional
 from fastapi import APIRouter, Depends
 
+from app.models.linea import Linea
+
 from app.models.vivienda import Vivienda
 from app.models.usuario import  Usuario, NewUsuario, EditUsuario, UsuarioFilter
 from app.models.vivienda import NewVivienda
 from app.service.vivienda import ViviendaService
 from app.service.usuario import UsuarioService
+from app.service.linea import LineaService
 from app.dependencies import get_vivienda_service
 from app.dependencies import get_usuario_service
+from app.dependencies import get_linea_service
 from app.models.types import PyObjectId
 from app.models.vivienda import EditVivienda
 from app.auth import Authentication, Claims
 
 router = APIRouter()
 
+@router.get("/lineas", response_model=List[Linea], operation_id="get_lineas", tags=["Lineas"])
+async def get_lineas(numLinea: Optional[int] = None, sentido: Optional[int] = None, service: LineaService = Depends(get_linea_service)):
+    return await service.get_lineas_by_numero_sentido(numLinea, sentido)
 
+@router.get("/lineas/{nombre}", response_model=List[Linea], operation_id="get_lineas_by_nombre", tags=["Lineas"])
+async def get_lineas_by_nombre(nombre: str, service: LineaService = Depends(get_linea_service)):
+    return await service.get_lineas_by_nombre(nombre)
+
+@router.get("/lineas/{latitud}/{longitud}", tags=["Lineas"])
+async def get_lineas_by_latitud_longitud(latitud: float, longitud: float, service: LineaService = Depends(get_linea_service)):
+    return await service.get_lineas_by_latitud_longitud(latitud, longitud)
+
+
+
+### IGNORAR ###
 
 @router.get("/viviendas", response_model=List[Vivienda], operation_id="get_houses", tags=["Ignorar"])
 async def get_houses(service: ViviendaService = Depends(get_vivienda_service)):
@@ -44,7 +62,6 @@ async def auth(auth: Claims=Depends(Authentication)) -> str:
     return auth[9:44:1]
 
 
-#### usuario
 @router.get("/usuarios/{id}", response_model=Usuario, operation_id="get_user_by_id", tags=["Ignorar"])
 async def get_user(id: PyObjectId, service: UsuarioService = Depends(get_usuario_service)):
     return await service.get_usuario_by_id(id)

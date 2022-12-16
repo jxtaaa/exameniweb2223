@@ -2,7 +2,7 @@ from fastapi import Depends, FastAPI
 from pymongo import MongoClient
 from fastapi.openapi.utils import get_openapi
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes.vivienda import router
+from app.routes.router import router
 
 app = FastAPI()
 
