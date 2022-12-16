@@ -45,16 +45,16 @@ export interface NewUsuario {
     direccion: string;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof NewUsuario
      */
-    latitude: string;
+    latitude: number;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof NewUsuario
      */
-    longitude: string;
+    longitude: number;
     /**
      * 
      * @type {string}

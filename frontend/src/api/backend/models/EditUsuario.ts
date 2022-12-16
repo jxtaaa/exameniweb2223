@@ -45,16 +45,16 @@ export interface EditUsuario {
     direccion: string;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof EditUsuario
      */
-    latitude: string;
+    latitude: number;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof EditUsuario
      */
-    longitude: string;
+    longitude: number;
     /**
      * 
      * @type {string}

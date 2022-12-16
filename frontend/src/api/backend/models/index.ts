@@ -3,6 +3,7 @@
 export * from './EditUsuario';
 export * from './EditVivienda';
 export * from './HTTPValidationError';
+export * from './Linea';
 export * from './LocationInner';
 export * from './NewUsuario';
 export * from './NewVivienda';

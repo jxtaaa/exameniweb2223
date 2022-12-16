@@ -51,16 +51,16 @@ export interface Usuario {
     direccion: string;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof Usuario
      */
-    latitude: string;
+    latitude: number;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof Usuario
      */
-    longitude: string;
+    longitude: number;
     /**
      * 
      * @type {string}

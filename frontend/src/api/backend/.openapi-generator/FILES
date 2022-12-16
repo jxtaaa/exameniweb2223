@@ -1,9 +1,12 @@
-apis/DefaultApi.ts
+apis/AuthApi.ts
+apis/IgnorarApi.ts
+apis/LineasApi.ts
 apis/index.ts
 index.ts
 models/EditUsuario.ts
 models/EditVivienda.ts
 models/HTTPValidationError.ts
+models/Linea.ts
 models/LocationInner.ts
 models/NewUsuario.ts
 models/NewVivienda.ts

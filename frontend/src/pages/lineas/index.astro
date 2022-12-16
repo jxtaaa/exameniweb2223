@@ -1,0 +1,103 @@
+---
+import ExamenLayout from "../../layouts/ExamenLayout.astro";
+import Map from "../../components/Map.svelte"
+import { getAccessToken, isLoggedIn } from "../../lib/auth0";
+import { Configuration, LineasApi, AuthApi, GetLineasRequest, GetLineasByNombreRequest } from "../../api/backend";
+import cookies from '../../cookies';
+import AppConfig from "../../config";
+import type { APIContext } from "astro";
+import Peticion from "./Peticion.svelte";
+import Mapa from "./Mapa.svelte";
+
+if (!isLoggedIn(Astro)) {
+  return Astro.redirect("/authError?danger=You must be logged in");
+}
+
+const authApi = new AuthApi(
+  new Configuration({
+    basePath: import.meta.env.BACKEND_URL,
+    accessToken: () => getAccessToken(Astro),
+  })
+);
+
+let sub = await authApi.authAuthGet();
+
+let codLinea = 0;
+let sentido = 0;
+
+const params = Astro.url.searchParams;
+
+const codLineaFilter = params.get("codLinea");
+const sentidoFilter = params.get("sentido");
+const nombreFilter = params.get("nombre");
+
+const config = new Configuration(AppConfig.lineas);
+const api = new LineasApi(config);
+
+let filter : GetLineasRequest = {
+  numLinea: codLineaFilter ? parseInt(codLineaFilter) : undefined,
+  sentido: sentidoFilter ? parseInt(sentidoFilter) : undefined
+};
+
+let nombreFilterReq : GetLineasByNombreRequest = {
+  nombre: nombreFilter ? nombreFilter : ""
+};
+
+let points : any;
+
+if ((filter.numLinea == undefined && filter.sentido == undefined) || (filter.numLinea === 0 && filter.numLinea === 0)) {
+  points = [];
+} else {
+  const res = await api.getLineas(filter);
+
+  //Recorre res y saca un array de objetos con las coordenadas
+  points = res.map((item) => {
+    return {
+      coordinates: [item.lat, item.lon]
+    };
+  });
+}
+
+//const resNombre = await api.getLineasByNombre(nombreFilterReq);
+
+if (nombreFilterReq.nombre != "") {
+  const res = await api.getLineasByNombre(nombreFilterReq);
+  points = res.map((item) => {
+    return {
+      coordinates: [item.lat, item.lon]
+    };
+  });
+}
+const token = await getAccessToken(Astro);
+const userid = (sub.split("|")[1]).replace('"', '');
+async function getUserData(){
+  let data = await fetch(
+    `https://${import.meta.env.PUBLIC_AUTH0_BASEURL}/userinfo`,
+    {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
+  ).then(x => x.json())
+  return data;
+}
+const userData = await getUserData();
+
+//Write a log file each time someome does a search
+import fs from 'fs';
+import path from 'path';
+const logFile = path.join(process.cwd(), 'log.txt');
+const log = `${new Date().toISOString()} - ${userData["email"]} - ${filter.numLinea} - ${filter.sentido} - ${nombreFilterReq.nombre} \n`;
+fs.appendFileSync(logFile, log);
+
+
+
+
+---
+<ExamenLayout title="Lineas">
+  <Peticion />
+  Mapa:
+    <div class="container">
+        <Map client:only origin={[36.719500, -4.421590]} points={points}/>
+      </div> 
+</ExamenLayout>

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { EditVivienda, DefaultApi } from "../api/backend";
+    import { EditVivienda, IgnorarApi } from "../api/backend";
     import type {Vivienda} from "../api/backend";
     import AppConfig from "../config";
     export let cloudName = "";

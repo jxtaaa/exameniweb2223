@@ -14,6 +14,7 @@ const { title } = Astro.props;
 const isLoggedIn = Astro.cookies.has(cookies.refreshToken);
 
 const home = "Index";
+/*
 const pages = [
   { url: "/viviendas/authRoute", title: "Authenticated route", requiresAuth: true },
   { url: "/viviendas/new/newHouse", title: "Create", requiresAuth: true },
@@ -21,6 +22,11 @@ const pages = [
   { url: "/viviendas/6398a573bb164834e1be7828", title: "View"},
   { url: "/viviendas/delete/6398a573bb164834e1be7828", title: "Delete", requiresAuth: true },
   { url: "/viviendas/map", title: "Map" }
+].filter((x) => implies(x.requiresAuth, isLoggedIn));
+*/
+const pages = [
+  {url: "/lineas", title: "Lineas", requiresAuth: true},
+  {url: "log", title: "Log", requiresAuth: true}
 ].filter((x) => implies(x.requiresAuth, isLoggedIn));
 
 const info = Astro.url.searchParams.get("info");
