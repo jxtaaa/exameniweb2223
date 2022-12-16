@@ -80,12 +80,14 @@ async function getUserData(){
 }
 const userData = await getUserData();
 
+/*
 //Write a log file each time someome does a search
 import fs from 'fs';
 import path from 'path';
 const logFile = path.join(process.cwd(), 'log.txt');
 const log = `${new Date().toISOString()} - ${userData["email"]} - ${filter.numLinea} - ${filter.sentido} - ${nombreFilterReq.nombre} \n`;
 fs.appendFileSync(logFile, log);
+*/
 
 
 
