@@ -5,6 +5,7 @@ from httpx import AsyncClient
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from app.service.vivienda import ViviendaService
+from app.service.usuario import UsuarioService
 
 from .settings import Settings
 
@@ -37,6 +38,10 @@ def get_app_collection(
 @lru_cache
 def get_vivienda_service(collection=Depends(get_app_collection)) -> ViviendaService:
     return ViviendaService(collection)
+
+@lru_cache
+def get_usuario_service(collection=Depends(get_app_collection)) -> UsuarioService:
+    return UsuarioService(collection)
 
 _keys = None
 

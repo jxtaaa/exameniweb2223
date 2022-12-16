@@ -15,18 +15,27 @@
 
 import * as runtime from '../runtime';
 import type {
+  EditUsuario,
   EditVivienda,
   HTTPValidationError,
+  NewUsuario,
   NewVivienda,
+  Usuario,
   Vivienda,
 } from '../models';
 import {
+    EditUsuarioFromJSON,
+    EditUsuarioToJSON,
     EditViviendaFromJSON,
     EditViviendaToJSON,
     HTTPValidationErrorFromJSON,
     HTTPValidationErrorToJSON,
+    NewUsuarioFromJSON,
+    NewUsuarioToJSON,
     NewViviendaFromJSON,
     NewViviendaToJSON,
+    UsuarioFromJSON,
+    UsuarioToJSON,
     ViviendaFromJSON,
     ViviendaToJSON,
 } from '../models';
@@ -35,17 +44,34 @@ export interface DeleteHouseRequest {
     id: string;
 }
 
+export interface DeleteUserRequest {
+    id: string;
+}
+
 export interface EditHouseRequest {
     id: string;
     editVivienda: EditVivienda;
+}
+
+export interface EditUserRequest {
+    id: string;
+    editUsuario: EditUsuario;
 }
 
 export interface GetHouseByIdRequest {
     id: string;
 }
 
+export interface GetUserByIdRequest {
+    id: string;
+}
+
 export interface NewHouseRequest {
     newVivienda: NewVivienda;
+}
+
+export interface NewUserRequest {
+    newUsuario: NewUsuario;
 }
 
 /**
@@ -118,6 +144,36 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
+     * Delete User
+     */
+    async deleteUserRaw(requestParameters: DeleteUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteUser.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/usuarios/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Delete User
+     */
+    async deleteUser(requestParameters: DeleteUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any> {
+        const response = await this.deleteUserRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Edit House
      */
     async editHouseRaw(requestParameters: EditHouseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Vivienda>> {
@@ -151,6 +207,43 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async editHouse(requestParameters: EditHouseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Vivienda> {
         const response = await this.editHouseRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Edit User
+     */
+    async editUserRaw(requestParameters: EditUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Usuario>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling editUser.');
+        }
+
+        if (requestParameters.editUsuario === null || requestParameters.editUsuario === undefined) {
+            throw new runtime.RequiredError('editUsuario','Required parameter requestParameters.editUsuario was null or undefined when calling editUser.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/usuarios/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: EditUsuarioToJSON(requestParameters.editUsuario),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => UsuarioFromJSON(jsonValue));
+    }
+
+    /**
+     * Edit User
+     */
+    async editUser(requestParameters: EditUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Usuario> {
+        const response = await this.editUserRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -211,6 +304,62 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
+     * Get User
+     */
+    async getUserByIdRaw(requestParameters: GetUserByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Usuario>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getUserById.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/usuarios/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => UsuarioFromJSON(jsonValue));
+    }
+
+    /**
+     * Get User
+     */
+    async getUserById(requestParameters: GetUserByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Usuario> {
+        const response = await this.getUserByIdRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get Users
+     */
+    async getUsersRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Usuario>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/usuarios`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(UsuarioFromJSON));
+    }
+
+    /**
+     * Get Users
+     */
+    async getUsers(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Usuario>> {
+        const response = await this.getUsersRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Create House
      */
     async newHouseRaw(requestParameters: NewHouseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Vivienda>> {
@@ -240,6 +389,39 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async newHouse(requestParameters: NewHouseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Vivienda> {
         const response = await this.newHouseRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Create User
+     */
+    async newUserRaw(requestParameters: NewUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Usuario>> {
+        if (requestParameters.newUsuario === null || requestParameters.newUsuario === undefined) {
+            throw new runtime.RequiredError('newUsuario','Required parameter requestParameters.newUsuario was null or undefined when calling newUser.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/usuarios`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: NewUsuarioToJSON(requestParameters.newUsuario),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => UsuarioFromJSON(jsonValue));
+    }
+
+    /**
+     * Create User
+     */
+    async newUser(requestParameters: NewUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Usuario> {
+        const response = await this.newUserRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

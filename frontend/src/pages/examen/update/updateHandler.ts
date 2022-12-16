@@ -44,24 +44,8 @@ export async function post(context: APIContext) {
         price,
         image
     } = data;
-    
-    /*
-    
-    
-
-    const titulo = formData.get("title")?.toString() ?? "";
-    const descripcion = formData.get("description")?.toString() ?? "";
-    const calle = formData.get("street")?.toString() ?? "";
-    const numero = formData.get("number")?.toString() ?? "";
-    const ciudad = formData.get("city")?.toString() ?? "";
-    const provincia = formData.get("province")?.toString() ?? "";
-    const cp = formData.get("cp")?.toString() ?? "";
-    const pais = formData.get("country")?.toString() ?? "";
-    const precio = formData.get("price")?.toString() ?? "";
-    */
 
     viv = await viviendaApi.getHouseById({ id: idCasa });
-
 
     //const loc : string = street + ", " + number + ", " + city + ", " + province + ", " + cp + ", " + country;
     const geoRes = await getGeocoding(direccion);
