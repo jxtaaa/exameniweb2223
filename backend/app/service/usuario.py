@@ -1,5 +1,5 @@
 import pymongo
-from app.models.usuario import Usuario, NewUsuario, EditUsuario
+from app.models.usuario import Usuario, NewUsuario, EditUsuario, UsuarioFilter
 from app.models.types import PyObjectId
 from motor.motor_asyncio import AsyncIOMotorCollection
 from typing import List, Optional
@@ -29,6 +29,18 @@ class UsuarioService:
         async for document in cursor:
             usuarios.append(Usuario(**document))
         return usuarios
+
+    async def get_usuario_by_filter(self, f: UsuarioFilter) -> List[Usuario]:
+        pipeline = []
+        if f.nombre:
+            pipeline.append({"$match": {"nombre": f.nombre}})
+        if f.email:
+            pipeline.append({"$match": {"email": f.email}})
+
+        return [
+            Usuario(**document)
+            async for document in self.collection.aggregate(pipeline)
+        ]
     
     async def get_usuario_by_id(self, id: PyObjectId) -> Usuario:
         document = await self.collection.find_one({"_id": id})

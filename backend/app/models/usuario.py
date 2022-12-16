@@ -40,4 +40,11 @@ class EditUsuario(BaseModel):
     class Config:
         json_encoders = {ObjectId: str}
 
+class UsuarioFilter(BaseModel):
+    nombre: Optional[str]
+    email: Optional[str]
+
+    class Config:
+        json_encoders = {ObjectId: str}
+
 

@@ -1,8 +1,8 @@
-from typing import List
+from typing import List, Optional
 from fastapi import APIRouter, Depends
 
 from app.models.vivienda import Vivienda
-from app.models.usuario import  Usuario, NewUsuario, EditUsuario
+from app.models.usuario import  Usuario, NewUsuario, EditUsuario, UsuarioFilter
 from app.models.vivienda import NewVivienda
 from app.service.vivienda import ViviendaService
 from app.service.usuario import UsuarioService
@@ -45,14 +45,14 @@ async def auth(auth: Claims=Depends(Authentication)) -> str:
 
 
 #### usuario
-
-@router.get("/usuarios", response_model=List[Usuario], operation_id="get_users", tags=["Ignorar"])
-async def get_users(service: UsuarioService = Depends(get_usuario_service)):
-    return await service.get_usuarios()
-
 @router.get("/usuarios/{id}", response_model=Usuario, operation_id="get_user_by_id", tags=["Ignorar"])
 async def get_user(id: PyObjectId, service: UsuarioService = Depends(get_usuario_service)):
     return await service.get_usuario_by_id(id)
+
+@router.get("/usuarios", response_model=List[Usuario], operation_id="get_user_by_filter", tags=["Ignorar"])
+async def get_user_by_filter(nombre: Optional[str] = None, email:Optional[str] = None , service: UsuarioService = Depends(get_usuario_service)):
+    f = UsuarioFilter(nombre=nombre, email=email)
+    return await service.get_usuario_by_filter(f)
 
 @router.post("/usuarios", response_model=Usuario, operation_id="new_user", tags=["Ignorar"])
 async def create_user(request: NewUsuario, service: UsuarioService = Depends(get_usuario_service)):
@@ -65,8 +65,5 @@ async def delete_user(id: PyObjectId, service: UsuarioService = Depends(get_usua
 @router.put("/usuarios/{id}", response_model=Usuario, operation_id="edit_user", tags=["Ignorar"])
 async def edit_user(id: PyObjectId, request: EditUsuario, service: UsuarioService = Depends(get_usuario_service)):
     return await service.edit_usuario(id, request)
-
-
-
 
 
