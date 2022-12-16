@@ -3,11 +3,8 @@ import ExamenLayout from "../../layouts/ExamenLayout.astro";
 import Map from "../../components/Map.svelte"
 import { getAccessToken, isLoggedIn } from "../../lib/auth0";
 import { Configuration, LineasApi, AuthApi, GetLineasRequest, GetLineasByNombreRequest } from "../../api/backend";
-import cookies from '../../cookies';
 import AppConfig from "../../config";
-import type { APIContext } from "astro";
 import Peticion from "./Peticion.svelte";
-import Mapa from "./Mapa.svelte";
 
 if (!isLoggedIn(Astro)) {
   return Astro.redirect("/authError?danger=You must be logged in");
