@@ -1,7 +1,7 @@
 ---
 import { DefaultApi } from "../../../api/backend/apis";
 import ExamenLayout from "../../../layouts/ExamenLayout.astro";
-import CloudinaryEdit from "../../../components/CloudinaryEdit.svelte";
+import CloudinaryEditHouse from "../../../components/CloudinaryEditHouse.svelte";
 import AppConfig from "../../../config";
 import {
   Configuration as ViviendaConfiguration,
@@ -26,7 +26,7 @@ const loc = viv?.direccion;
 ---
 
 <ExamenLayout title="Edit">
-  <CloudinaryEdit
+  <CloudinaryEditHouse
   cloudName= {import.meta.env.CLOUDINARY_CLOUD_NAME}
   uploadPreset={import.meta.env.CLOUDINARY_UPLOAD_PRESET}
   vivienda={viv}
