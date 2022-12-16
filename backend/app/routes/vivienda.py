@@ -46,7 +46,7 @@ async def auth(auth: Claims=Depends(Authentication)) -> str:
 
 #### usuario
 
-@router.get("/usuarios", response_model=List[Usuario], operation_id="get_users" tag=["Ignorar"])
+@router.get("/usuarios", response_model=List[Usuario], operation_id="get_users", tag=["Ignorar"])
 async def get_users(service: UsuarioService = Depends(get_usuario_service)):
     return await service.get_usuarios()
 
