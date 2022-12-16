@@ -15,12 +15,12 @@ const isLoggedIn = Astro.cookies.has(cookies.refreshToken);
 
 const home = "Index";
 const pages = [
-  { url: "/examen/authRoute", title: "Authenticated route", requiresAuth: true },
-  { url: "/examen/new/newHouse", title: "Create", requiresAuth: true },
-  { url: "/examen/update/6398a573bb164834e1be7828", title: "Update", requiresAuth: true },
-  { url: "/examen/6398a573bb164834e1be7828", title: "View"},
-  { url: "/examen/delete/6398a573bb164834e1be7828", title: "Delete", requiresAuth: true },
-  { url: "/examen/map", title: "Map" }
+  { url: "/viviendas/authRoute", title: "Authenticated route", requiresAuth: true },
+  { url: "/viviendas/new/newHouse", title: "Create", requiresAuth: true },
+  { url: "/viviendas/update/6398a573bb164834e1be7828", title: "Update", requiresAuth: true },
+  { url: "/viviendas/6398a573bb164834e1be7828", title: "View"},
+  { url: "/viviendas/delete/6398a573bb164834e1be7828", title: "Delete", requiresAuth: true },
+  { url: "/viviendas/map", title: "Map" }
 ].filter((x) => implies(x.requiresAuth, isLoggedIn));
 
 const info = Astro.url.searchParams.get("info");
