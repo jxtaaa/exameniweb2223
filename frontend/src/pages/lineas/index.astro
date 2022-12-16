@@ -5,8 +5,7 @@ import { getAccessToken, isLoggedIn } from "../../lib/auth0";
 import { Configuration, LineasApi, AuthApi, GetLineasRequest, GetLineasByNombreRequest } from "../../api/backend";
 import AppConfig from "../../config";
 import Peticion from "./Peticion.svelte";
-import fs from 'fs';
-import path from 'path';
+
 
 if (!isLoggedIn(Astro)) {
   return Astro.redirect("/authError?danger=You must be logged in");
@@ -82,11 +81,14 @@ async function getUserData(){
 }
 const userData = await getUserData();
 
-
+/*
+//import fs from 'fs';
+//import path from 'path';
 //Write a log file each time someome does a search
 const logFile = path.join(process.cwd(), 'log.txt');
 const log = `${new Date().toISOString()} - ${userData["email"]} - ${filter.numLinea} - ${filter.sentido} - ${nombreFilterReq.nombre} \n`;
 fs.appendFileSync(logFile, log);
+*/
 
 
 
